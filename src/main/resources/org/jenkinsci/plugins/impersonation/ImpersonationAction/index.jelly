@@ -1,0 +1,38 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
+         xmlns:t="/lib/hudson" xmlns:s="/lib/form">
+  <l:layout title="${%Impersonation}" permission="${it.READ}">
+    <st:include page="sidepanel" it="${it.user}"/>
+    <l:main-panel>
+      <h1>
+        <l:icon src="${resURL}/plugin/impersonation/images/48x48/impersonate.png"/>
+        ${%Impersonation}
+      </h1>
+      <p>
+        ${%blurb}
+      </p>
+      <j:set var="authorities" value="${it.authorities}"/>
+      <j:if test="${!authorities.isEmpty()}">
+        <table class="sortable pane bigtable stripped-odd" style="width:auto;">
+          <tr>
+            <th>${%Group}</th>
+          </tr>
+          <j:forEach var="a" items="${authorities}">
+          <tr>
+            <td>
+              <j:set var="url" value="${it.impersonationUrl(a)}"/>
+              <l:confirmationLink href="${url}" message="${%confirm(a)}" post="true">
+                <l:icon class="icon-md icon-user"/>
+              </l:confirmationLink>
+              <st:nbsp/>
+              <l:confirmationLink href="${url}" message="${%confirm(a)}" post="true">
+                ${a}
+              </l:confirmationLink>
+            </td>
+          </tr>
+          </j:forEach>
+        </table>
+      </j:if>
+    </l:main-panel>
+  </l:layout>
+</j:jelly>
